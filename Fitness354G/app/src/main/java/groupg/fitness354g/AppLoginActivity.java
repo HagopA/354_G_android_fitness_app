@@ -29,8 +29,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -70,6 +76,33 @@ public class AppLoginActivity extends AppCompatActivity implements LoaderCallbac
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
+        Scanner is = null;
+        try
+        {
+            is = new Scanner(new File("Fitness354G\\app\\src\\data.json"));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        String text = "cdasvfdbd";
+
+//        while(is.hasNext())
+//        {
+//            text += is.next();
+//        }
+
+        System.out.println(text);
+        JSONObject test = null;
+        try
+        {
+            test = new JSONObject(text);
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
