@@ -7,9 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -32,23 +29,35 @@ public class GraphView extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String text = "cdasvfdbd";
 
-//        while(is.hasNext())
+
+//        Scanner is = null;
+//        try
 //        {
-//            text += is.next();
+//            is = new Scanner(new File("Fitness354G\\app\\src\\data.json"));
 //        }
-
-        System.out.println(text);
-        JSONObject test = null;
-        try
-        {
-            test = new JSONObject(text);
-        }
-        catch (JSONException e)
-        {
-            e.printStackTrace();
-        }
+//        catch (FileNotFoundException e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+//        String text = "cdasvfdbd";
+//
+////        while(is.hasNext())
+////        {
+////            text += is.next();
+////        }
+//
+//        System.out.println(text);
+//        JSONObject test = null;
+//        try
+//        {
+//            test = new JSONObject(text);
+//        }
+//        catch (JSONException e)
+//        {
+//            e.printStackTrace();
+//        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
