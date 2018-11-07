@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         if((userName.equals("user"))&& (userPassword.equals("7890")))
         {
-            Intent intent= new Intent(MainActivity.this,Main2Activity.class);
+            Intent intent= new Intent(MainActivity.this,GraphView.class);
 
             intent.putExtra("u_id",userName);
             intent.putExtra("pwd", userPassword);
