@@ -8,13 +8,21 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Main2Activity extends AppCompatActivity {
     private TextView info;
     private  JSONObject jsonObj;
+    //private String dataObj;
     private  String JSONString = null;
+    private String something;
+    private JSONArray workouts;
 
     public void callFitnessGraphView(View view)
     {
@@ -25,20 +33,30 @@ public class Main2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadJsonData();
+        String rawJson = loadJsonData();
+
+        try {
+            something = loadEachData(rawJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //e.printStackTrace();
+
         setContentView(R.layout.activity_main2);
         info=(TextView) findViewById((R.id.textView));
         Intent intent = getIntent();
         String Name= intent.getStringExtra("u_id");
         String Password= intent.getStringExtra("pwd");
-        loadJsonData();
-        info.setText("Session info: "+Name +" and  "+Password + "  " + jsonObj);
+        //loadJsonData();
+        info.setText("Session info: "+Name +" and  "+Password + "  " + something);
 
     }
 
     // Filter the json file, and store it in another file
-    public JSONObject loadJsonData()
-    {
+    public String loadJsonData(){
+
+         ///String d;
         try {
             InputStream inputStream = getResources().openRawResource(R.raw.data);
             int sizeOfJSONFile = inputStream.available();
@@ -53,16 +71,65 @@ public class Main2Activity extends AppCompatActivity {
             inputStream.close();
 
             JSONString = new String(bytes, "UTF-8");
-            jsonObj = new JSONObject(JSONString);
+            //jsonObj = new JSONObject(JSONString);
+            //d = jsonObj.getString("data");
+            // dataObj = jsonObj.getJSONObject("data");
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (JSONException x) {
-            x.printStackTrace();
-            return null;
-        }
-        return jsonObj;
+        return JSONString;
     }
+
+    public String loadEachData(String d) throws JSONException {
+        JSONObject w = new JSONObject(d);
+        workouts = w.getJSONArray("data");
+        List<String> speed_data = new ArrayList();
+        List<String> time_data = new ArrayList();
+
+        for (int i = 0; i< workouts.length(); i++) {
+            JSONObject c = workouts.getJSONObject(i);
+
+            int sport = c.getInt("sport2");
+            //only if the sport is cycling
+            if(sport == 2) {
+                String speed = c.getString("speed_kmh_avg");
+                if (speed != null) {
+                    speed_data.add(speed);
+                    //return speed;
+                }
+                String date = c.getString("start_time");
+                if (date != null){
+                    time_data.add(date);
+                }
+            }
+        }
+
+        //print out all the workout results with for loop
+        //print lists of strings
+
+
+        return speed_data.toString();
+
+
+        //return w;
+
+/*
+
+
+
+
+            String time = c.getString("start_time");
+            if(time != null) {
+                time_data.add(time);
+                return time;
+            }
+        }
+        return "";
+        */
+    }
+
 }
