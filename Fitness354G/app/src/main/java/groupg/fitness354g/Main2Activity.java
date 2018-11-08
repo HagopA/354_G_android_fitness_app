@@ -63,6 +63,16 @@ public class Main2Activity extends AppCompatActivity {
 
          ///String d;
         try {
+            // FileInputStream inputStream = openFileInput("data.json");
+            //int content;
+            //String dataText = "";
+            //while(content = inputStream.read() != -1){
+            //  dataText += (char)content;
+            //}
+            //inputStream.close;
+            //JSONString = new String(bytes, "UTF-8");
+
+
             InputStream inputStream = getResources().openRawResource(R.raw.data);
             int sizeOfJSONFile = inputStream.available();
 
