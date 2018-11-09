@@ -3,11 +3,14 @@ package groupg.fitness354g;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import org.json.JSONArray;
@@ -20,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -27,13 +31,15 @@ import java.util.List;
 
 public class FitnessGraphView extends AppCompatActivity {
 
-    private PointsGraphSeries<DataPoint> series;
+    private LineGraphSeries<DataPoint> series;
+    private LineGraphSeries<DataPoint> series2;
 
     private  String JSONString = null;
     private JSONArray workouts;
     private List<String> speed_data = new ArrayList();
     private List<String> time_data = new ArrayList();
     private List<Pair<String, String>> data = new ArrayList();
+    private GraphView graph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +58,11 @@ public class FitnessGraphView extends AppCompatActivity {
         }
 
         String x;
-        double y;
+        double y= 1;
 
-        GraphView graph = findViewById(R.id.graph);
-        series = new PointsGraphSeries<>();
-
-
+        graph = findViewById(R.id.graph);
+        DataPoint[] v = new DataPoint[data.size()];
+        Log.d("klkl", String.valueOf(data.size()));
 
         for(int i = 0; i < data.size(); i++)
         {
@@ -72,18 +77,60 @@ public class FitnessGraphView extends AppCompatActivity {
                 e.printStackTrace();
             }
             y = Double.parseDouble(data.get(i).second);
-            series.appendData(new DataPoint(d, y), true, data.size());
+            v[i] = new DataPoint(d, y);
+
+        }
+        series = new LineGraphSeries<>(v);
+        Date d1 = null;
+        Date d2 = null;
+        try
+        {
+            d1 = dateFormat.parse(data.get(0).first);
+            d2 = dateFormat.parse(data.get(data.size()-1).first);
+            System.out.println(d1);
+            System.out.println(d2);
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
         }
 
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(d2);
+        c.add(Calendar.DATE, 7);
+        d2 = c.getTime();
+        c.setTime(d1);
+        c.add(Calendar.DATE, -7);
+        d1 = c.getTime();
+        v = new DataPoint[2];
+        v[0] = new DataPoint(d1, y);
+        v[1] = new DataPoint(d2, y);
+        series2 = new LineGraphSeries<>(v);
+
+        graph.setTitle("Average speed of the workout");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        graph.getViewport().setMinX(d1.getTime() - 86400 *2);
+        graph.getViewport().setMaxX(d2.getTime());
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScrollable(true);
+        graph.getGridLabelRenderer().setHumanRounding(false);
         graph.getGridLabelRenderer().setHorizontalLabelsAngle(45);
         graph.getGridLabelRenderer().setVerticalAxisTitle("Avg Speed");
-        graph.setHorizontalScrollBarEnabled(true);
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
+        series.setDrawDataPoints(true);
         graph.addSeries(series);
+        graph.addSeries(series2);
 
-        series.setShape(PointsGraphSeries.Shape.POINT);
+        series2.setColor(Color.alpha(0));
+
+//        series.setShape(PointsGraphSeries.Shape.POINT);
         series.setColor(Color.MAGENTA);
+    }
+
+    public void onClick(View v){
+        System.out.print("d");
     }
 
     public String loadJsonData(){
