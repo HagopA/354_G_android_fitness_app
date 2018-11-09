@@ -41,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Name =(EditText) findViewById(R.id.etName);
-        Password =(EditText) findViewById(R.id.etPassword);
-        Login =(Button) findViewById(R.id.btnLogin);
-        info=(TextView) findViewById((R.id.tvinfo));
+        Name = findViewById(R.id.etName);
+        Password = findViewById(R.id.etPassword);
+        Login = findViewById(R.id.btnLogin);
+        info = findViewById((R.id.tvinfo));
         info.setText("No of attemps remaining: 3");
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.dismiss();
 
     }
+
 
     public void invalid(){
         alertDialog.dismiss();
