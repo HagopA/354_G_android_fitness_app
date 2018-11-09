@@ -3,7 +3,6 @@ package groupg.fitness354g;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
@@ -26,7 +25,7 @@ public class Main2Activity extends AppCompatActivity {
     private JSONArray workouts;
     private List<String> speed_data = new ArrayList();
     private List<String> time_data = new ArrayList();
-    private List<Pair<String, String>> data = new ArrayList();
+    private static List<Pair<String, String>> data = new ArrayList();
 
     public void callFitnessGraphView(View view)
     {
