@@ -1,24 +1,28 @@
 package groupg.fitness354g;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
-import android.view.View;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +44,7 @@ public class FitnessGraphView extends AppCompatActivity {
     private List<String> time_data = new ArrayList();
     private List<Pair<String, String>> data = new ArrayList();
     private GraphView graph;
+    private Context context =  this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +112,12 @@ public class FitnessGraphView extends AppCompatActivity {
         v[0] = new DataPoint(d1, y);
         v[1] = new DataPoint(d2, y);
         series2 = new LineGraphSeries<>(v);
-
+        series.setOnDataPointTapListener(new OnDataPointTapListener() {
+            @Override
+            public void onTap(Series series, DataPointInterface dataPoint) {
+                Toast.makeText(context, "Date: "+ DateFormat.format("MM/dd/yyyy", new Date((long)dataPoint.getX())).toString() + " Avg Speed: " +dataPoint.getY(), Toast.LENGTH_SHORT).show();
+            }
+        });
         graph.setTitle("Average speed of the workout");
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
         graph.getViewport().setMinX(d1.getTime() - 86400 *2);
@@ -126,40 +136,36 @@ public class FitnessGraphView extends AppCompatActivity {
         series2.setColor(Color.alpha(0));
 
 //        series.setShape(PointsGraphSeries.Shape.POINT);
-        series.setColor(Color.MAGENTA);
-    }
-
-    public void onClick(View v){
-        System.out.print("d");
+        series.setColor(Color.BLUE);
     }
 
     public String loadJsonData(){
 
         ///String d;
         try {
-            // FileInputStream inputStream = openFileInput("data.json");
-            //int content;
-            //String dataText = "";
-            //while(content = inputStream.read() != -1){
-            //  dataText += (char)content;
-            //}
-            //inputStream.close;
-            //JSONString = new String(bytes, "UTF-8");
-
-
-            InputStream inputStream = getResources().openRawResource(R.raw.data);
-            int sizeOfJSONFile = inputStream.available();
-
-            //array that will store all the data
-            byte[] bytes = new byte[sizeOfJSONFile];
-
-            //reading data into the array from the file
-            inputStream.read(bytes);
-
-            //close the input stream
+             FileInputStream inputStream = openFileInput("data.json");
+            int content;
+            String dataText = "";
+            while((content = inputStream.read()) != -1){
+              dataText += (char)content;
+            }
             inputStream.close();
-
-            JSONString = new String(bytes, "UTF-8");
+            JSONString = dataText;
+//
+//
+//            InputStream inputStream = getResources().openRawResource(R.raw.data);
+//            int sizeOfJSONFile = inputStream.available();
+//
+//            //array that will store all the data
+//            byte[] bytes = new byte[sizeOfJSONFile];
+//
+//            //reading data into the array from the file
+//            inputStream.read(bytes);
+//
+//            //close the input stream
+//            inputStream.close();
+//
+//            JSONString = new String(bytes, "UTF-8");
             //jsonObj = new JSONObject(JSONString);
             //d = jsonObj.getString("data");
             // dataObj = jsonObj.getJSONObject("data");

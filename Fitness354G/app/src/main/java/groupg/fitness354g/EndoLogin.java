@@ -1,9 +1,7 @@
 package groupg.fitness354g;
 
 import android.content.Context;
-import android.preference.PreferenceActivity;
 import android.util.Log;
-import android.util.Pair;
 
 import com.loopj.android.http.*;
 
@@ -11,13 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import cz.msebera.android.httpclient.Header;
 

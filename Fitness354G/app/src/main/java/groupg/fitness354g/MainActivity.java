@@ -3,21 +3,13 @@ package groupg.fitness354g;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.CountDownTimer;
-import android.support.multidex.MultiDex;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this);
     }
 
     @Override
@@ -74,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         validDialog = new AlertDialog.Builder(this);
         validDialog.setPositiveButton("Go to menu", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent intent = new Intent(MainActivity.this, GraphView.class);
+                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
 
                 intent.putExtra("u_id", Name.getText());
                 intent.putExtra("pwd", Password.getText());
@@ -98,8 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void valid(){
         alertDialog.dismiss();
-        alertDialog = validDialog.create();
-        alertDialog.show();
+        Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+
+        intent.putExtra("u_id", Name.getText());
+        intent.putExtra("pwd", Password.getText());
+        startActivity(intent);
+        alertDialog = validation.create();
     }
 
     private void validate(String userName, String userPassword)
