@@ -23,25 +23,7 @@ public class EndoLogin {
     public MainActivity t;
 
 
-    RequestParams params = null;
 
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.get(getAbsoluteUrl(url), params, responseHandler);
-    }
-
-    public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.post(getAbsoluteUrl(url), params, responseHandler);
-    }
-
-    public void AccessEndo(String method, MainActivity nt){
-        t = nt;
-        if(method.equals("Authenticate")){
-            Authenticate();
-        }
-        else if(method.equals("Get")){
-            GetWorkouts();
-        }
-    }
 
     public boolean Authenticate(){
         final String authUrl = "auth?deviceId=dummy&email=" + email + "&password=" + password + "&country=CA&action=PAIR";
